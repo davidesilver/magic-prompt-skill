@@ -1,13 +1,13 @@
 ---
 name: magic-prompt-skill
-description: "The complete autonomous project kickoff & engineering pipeline. Integrates token hygiene (agent-stack-optimizer / TokenEconomizer), discovery & OKR alignment (Chief of Staff), brainstorming (superpowers), decision mapping (wayfinder), deep grilling (grill-me), multi-perspective validation (llm-council for architecture, roast-room for product/business), project governance (intent.md, claude-code-setup), TDD deep-module implementation (implement, gstack), and independent cross-family review (claudex-loop). Governed by 3 hard approval gates. Self-heals by checking and installing missing skills via doctor.py. Triggers: /magic-prompt-skill, /superpowers, /kickoff."
+description: "The complete autonomous project kickoff & engineering pipeline. Integrates token hygiene (agent-stack-optimizer / TokenEconomizer), discovery & OKR alignment (Chief of Staff), brainstorming (superpowers), decision mapping (wayfinder), deep grilling (grill-me), multi-perspective validation (llm-council for architecture, roast-room for product/business), project governance (intent.md, claude-code-setup), high-performance build tooling (rstackjs: Rsbuild, Rspress, Rslib, Rsdoctor), TDD deep-module implementation (implement, gstack), and independent cross-family review (claudex-loop). Governed by 3 hard approval gates. Self-heals by checking and installing missing skills via doctor.py. Triggers: /magic-prompt-skill, /superpowers, /kickoff."
 ---
 
 # Magic Prompt Skill: The Autonomous Project Kickoff & Engineering Pipeline
 
 The universal orchestration pipeline for new initiatives, features, and complex engineering across Claude Code, Codex, Antigravity, and OpenClaw/Jev.
 
-Instead of writing a complex 20-line kickoff prompt at every session launch, `/magic-prompt-skill` (aliased as `/superpowers` and `/kickoff`) runs a hardened 4-phase pipeline governed by **Layer 0 token hygiene**, **3 non-negotiable human approval gates**, and **cross-family independent verification**.
+Instead of writing a complex 20-line kickoff prompt at every session launch, `/magic-prompt-skill` (aliased as `/superpowers` and `/kickoff`) runs a hardened 4-phase pipeline governed by **Layer 0 token hygiene**, **high-performance Rust build toolchains (`rstackjs`)**, **3 non-negotiable human approval gates**, and **cross-family independent verification**.
 
 ---
 
@@ -49,16 +49,18 @@ If any core skill (`brainstorming`, `wayfinder`, `grill-me`, `llm-council`, `roa
                      [⛔ HARD-GATE 2: Council Verdict Approval]
                                        │
 ┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 3: Governance & Project Contract                                     │
+│  Phase 3: Governance, Documentation & Project Contract                      │
 │  6. intent.md (Root, verbatim words) ──▶ 7. claude-code-setup / Pocock Docs │
+│  • Documentation Engine: Rspress (rstackjs) for docs sites & specs          │
 └──────────────────────────────────────┬──────────────────────────────────────┘
                                        ▼
                      [⛔ HARD-GATE 3: Pre-Implementation Approval]
                                        │
 ┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 4: Implementation & Independent Cross-Family Review                  │
-│  8. /implement (Pocock Deep Modules + strict TDD) ──▶ 9. /gstack (Full-QA)  │
-│  10. /claudex-loop (Cross-Family Peer Inspection: Claude ⇆ Codex/Antigravity│
+│  Phase 4: Implementation, Build Toolchain & Cross-Family Review             │
+│  8. Toolchain: Rsbuild / Rslib (sub-second builds, zero token lag)          │
+│  9. /implement (Pocock Deep Modules + strict TDD) ──▶ 10. /gstack (Rsdoctor)│
+│  11. /claudex-loop (Cross-Family Peer Inspection: Claude ⇆ Codex/Antigravity│
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -115,15 +117,16 @@ Select the council lens based on the nature of the decision:
 
 ---
 
-### Phase 3: Project Governance & Contracts
+### Phase 3: Project Governance, Documentation & Contracts
 *Model tier: Host coordinator model.*
 
 1. **Write `intent.md`**:
    - Save at the repository root.
    - Contains: user's verbatim requirements, non-negotiable constraints, out-of-scope boundaries, and measurable acceptance criteria.
-2. **Scaffold Context Docs**:
+2. **Scaffold Context & Docs**:
    - Run `/claude-code-setup` or `setup-matt-pocock-skills`.
    - Update `CLAUDE.md` / `AGENTS.md` with issue-tracker location, triage labels, and domain glossaries (`GLOSSARY.md`, `docs/adr/`).
+   - If an interactive documentation portal is required, use **`Rspress`** (`rstackjs`) for instant static generation and minimal build overhead.
 
 > [!CAUTION]
 > ### ⛔ HARD-GATE 3: Pre-Implementation Approval
@@ -131,22 +134,27 @@ Select the council lens based on the nature of the decision:
 
 ---
 
-### Phase 4: Implementation & Independent Cross-Family Review
+### Phase 4: Implementation, High-Speed Build & Cross-Family Review
 *Model tier: Premier Coding Engine (Claude 3.7 Sonnet / Opus, OpenAI Codex / o3) + Independent Inspector.*
 
-1. **TDD & Deep Modules Implementation:**
+1. **High-Performance Build Standard (`rstackjs`):**
+   - **For new web projects (greenfield):** Default to **`Rsbuild`** for sub-second development server startup and lightning-fast HMR (<100ms), eliminating agent idle wait time.
+   - **For packages and libraries:** Standardize on **`Rslib`**.
+   - **For existing projects (brownfield):** Preserve existing bundlers (Vite/Next/Webpack); do not force migrations.
+2. **TDD & Deep Modules Implementation:**
    - Run `/implement` strictly applying Matt Pocock's Deep Module design:
      - Simple interface surface, deep and robust internal capability.
      - **Dynamic-First, Coordinate-Fallback** for all UI/automation elements.
      - Strict **TDD**: write failing test (Red), implement minimum code (Green), refactor clean (Refactor).
-2. **Full-Stack QA:**
+3. **Full-Stack QA & Bundle Audit:**
    - Run `/gstack` to verify build targets, integration sanity, and smoke tests.
-3. **Cross-Family Independent Review (`/claudex-loop`):**
+   - Run **`Rsdoctor`** when bundle bloat, duplicate dependencies, or build speed regressions need diagnosis.
+4. **Cross-Family Independent Review (`/claudex-loop`):**
    - The final inspection MUST be run through `/claudex-loop` using an independent peer provider:
      - If **Claude Code** built the code ➡️ **Codex** or **Antigravity** inspects in a fresh session.
      - If **Codex** built the code ➡️ **Claude Code** or **Antigravity** inspects.
    - Verification tests explicitly against every acceptance criterion in `intent.md`.
-4. **Completion Receipt:**
+5. **Completion Receipt:**
    - Output diff summary, proof command results, and close resolved wayfinder tickets.
 
 ---

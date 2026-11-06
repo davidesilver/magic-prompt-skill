@@ -2,12 +2,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![Toolchain: Rstack](https://img.shields.io/badge/toolchain-Rsbuild%20%7C%20Rspress-purple.svg)](https://github.com/rstackjs)
 [![Agents: Claude | Codex | Antigravity](https://img.shields.io/badge/agents-Claude%20%7C%20Codex%20%7C%20Antigravity-orange.svg)](#)
 
 > **The complete, self-healing project kickoff & autonomous engineering pipeline for AI agents.**  
 > Built for Claude Code, OpenAI Codex, Antigravity, and OpenClaw.
 
-Stop copy-pasting 20 lines of repetitive setup prompts every time you start a new coding session. `/magic-prompt-skill` (also available via `/superpowers` or `/kickoff`) runs a structured 4-phase orchestration pipeline backed by **background token optimization**, **3 strict human approval gates**, and **independent cross-family peer reviews**.
+Stop copy-pasting 20 lines of repetitive setup prompts every time you start a new coding session. `/magic-prompt-skill` (also available via `/superpowers` or `/kickoff`) runs a structured 4-phase orchestration pipeline backed by **background token optimization**, **sub-second Rust build toolchains (`rstackjs`)**, **3 strict human approval gates**, and **independent cross-family peer reviews**.
 
 ---
 
@@ -18,6 +19,7 @@ Stop copy-pasting 20 lines of repetitive setup prompts every time you start a ne
 | **Context bloat & token waste** | Integrates **Layer 0** with [`agent-stack-optimizer`](https://github.com/davidesilver/agent-stack-optimizer) (MarkItDown text extraction + 50% handoff guard) and `TokenEconomizer` loop breakers. |
 | **Premature coding without alignment** | Enforces **Phase 1** brainstorming (`superpowers`) + decision mapping (`wayfinder`) + relentless grilling (`grill-me`). |
 | **Tunnel vision & fragile architecture** | Dual-validation in **Phase 2**: business stress-testing via `/roast-room` and technical validation via `/llm-council`. |
+| **Slow agent ReAct loops & long builds** | Standardizes on **`rstackjs`** (Rsbuild, Rspress, Rslib, Rsdoctor) for instant compilation and sub-second feedback loops. |
 | **Missing skills & setup drift** | Built-in **Pre-flight Doctor** (`scripts/doctor.py --fix`) that auto-detects and installs missing skills across all your client folders. |
 | **Self-review bias in code generation** | Mandatory **Phase 4** independent cross-family inspection via `/claudex-loop` (e.g., Codex checks Claude's code against `intent.md`). |
 
@@ -49,16 +51,18 @@ Stop copy-pasting 20 lines of repetitive setup prompts every time you start a ne
                      [⛔ HARD-GATE 2: Council Verdict Approval]
                                        │
 ┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 3: Governance & Project Contract                                     │
+│  Phase 3: Governance, Documentation & Project Contract                      │
 │  6. intent.md (Root, verbatim words) ──▶ 7. claude-code-setup / Pocock Docs │
+│  • Documentation Engine: Rspress (rstackjs) for docs sites & specs          │
 └──────────────────────────────────────┬──────────────────────────────────────┘
                                        ▼
                      [⛔ HARD-GATE 3: Pre-Implementation Approval]
                                        │
 ┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 4: Implementation & Independent Cross-Family Review                  │
-│  8. /implement (Pocock Deep Modules + strict TDD) ──▶ 9. /gstack (Full-QA)  │
-│  10. /claudex-loop (Cross-Family Peer Inspection: Claude ⇆ Codex/Antigravity│
+│  Phase 4: Implementation, High-Speed Build & Cross-Family Review             │
+│  8. Toolchain: Rsbuild / Rslib (sub-second builds, zero token lag)          │
+│  9. /implement (Pocock Deep Modules + strict TDD) ──▶ 10. /gstack (Rsdoctor)│
+│  11. /claudex-loop (Cross-Family Peer Inspection: Claude ⇆ Codex/Antigravity│
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -96,7 +100,7 @@ Open any coding assistant session in your target project and type:
 ```
 *(or `/superpowers` / `/kickoff`)*
 
-The agent will automatically verify its environment, run discovery, interview you through the design tree, summon the council, draft `intent.md`, implement via TDD, and run cross-model review.
+The agent will automatically verify its environment, run discovery, interview you through the design tree, summon the council, draft `intent.md`, implement via TDD with Rsbuild/Rslib, and run cross-model review.
 
 ---
 
