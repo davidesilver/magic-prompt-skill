@@ -72,6 +72,17 @@ def check_layer0():
         "agent-stack-optimizer": aso_installed
     }
 
+def check_optional_tools():
+    wt_path = shutil.which("wt")
+    return {
+        "worktrunk (wt)": {
+            "installed": wt_path is not None,
+            "path": wt_path,
+            "description": "High-concurrency Git worktree isolation & lifecycle hooks (optional accelerator)",
+            "install_hint": "brew install max-sixty/worktrunk/wt or cargo install worktrunk"
+        }
+    }
+
 def auto_fix(missing_skills):
     print("\n[+] Attempting auto-fix for missing skills...")
     fixed_count = 0
@@ -134,6 +145,17 @@ def main():
     for tool, installed in layer0.items():
         status_icon = "✓" if installed else "✗"
         print(f"[{status_icon}] {tool:<28} {'Available' if installed else 'Not Found'}")
+
+    optional = check_optional_tools()
+    print("\nOptional Execution & Isolation Accelerators:")
+    for tool, info in optional.items():
+        if info["installed"]:
+            status_icon = "✓"
+            status_color = "\033[92m"
+            print(f"{status_color}[{status_icon}] {tool:<28}\033[0m Detected ({info['path']}) - {info['description']}")
+        else:
+            print(f"[i] {tool:<28} Optional (Not installed) - {info['description']}")
+            print(f"    └─ Recommendation: {info['install_hint']}")
 
     if missing:
         print(f"\n⚠️  {len(missing)} required skills are missing from your environment.")

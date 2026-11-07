@@ -133,8 +133,19 @@ $ python3 scripts/doctor.py
 Layer 0 Optimization Engines:
 [✓] agent-stack-optimizer        Available
 
+Optional Execution & Isolation Accelerators:
+[i] worktrunk (wt)               Optional (Not installed) - High-concurrency Git worktree isolation & lifecycle hooks (optional accelerator)
+    └─ Recommendation: brew install max-sixty/worktrunk/wt or cargo install worktrunk
+
 🎉 All required skills and tools are properly installed and ready!
 ```
+
+### 🌿 Workspace Isolation & Worktrunk Acceleration (Optional)
+
+`magic-prompt-skill` natively supports sub-second worktree isolation for parallel agent swarms. While standard `git worktree` is used by default with zero extra setup, installing [worktrunk (`wt`)](https://github.com/max-sixty/worktrunk) provides:
+* **Zero-Friction Switching**: Instant branch navigation via `wt switch -c <branch>`.
+* **Automated Environment Hydration**: Uses `wt.toml` (sample provided in `templates/wt.toml`) to automatically copy `.env` files and run dependency installation post-checkout.
+* **Safe Garbage Collection**: Clean teardown via `wt remove` to avoid lingering `.git/index.lock` collisions.
 
 ---
 

@@ -131,6 +131,7 @@ Select the council lens based on the nature of the decision:
    - Run `/claude-code-setup` or `setup-matt-pocock-skills`.
    - Update `CLAUDE.md` / `AGENTS.md` with issue-tracker location, triage labels, and domain glossaries (`GLOSSARY.md`, `docs/adr/`).
    - If an interactive documentation portal is required, use **`Rspress`** (`rstackjs`) for instant static generation and minimal build overhead.
+   - **Workspace Isolation Scaffolding (Optional)**: If the repository leverages worktree isolation for concurrent AI agents, copy `templates/wt.toml` to repo root to automate `.env` hydration and post-checkout dependency installation via `worktrunk` (`wt`).
 
 > [!CAUTION]
 > ### ⛔ HARD-GATE 3: Pre-Implementation Approval
@@ -145,7 +146,10 @@ Select the council lens based on the nature of the decision:
    - **For new web projects (greenfield):** Default to **`Rsbuild`** for sub-second development server startup and lightning-fast HMR (<100ms), eliminating agent idle wait time.
    - **For packages and libraries:** Standardize on **`Rslib`**.
    - **For existing projects (brownfield):** Preserve existing bundlers (Vite/Next/Webpack); do not force migrations.
-2. **TDD & Deep Modules Implementation:**
+2. **Workspace Isolation & TDD Deep Modules Implementation:**
+   - **Isolation Seam (`/new-feature`)**: Before editing, ensure branch isolation to prevent cross-agent workspace collisions. Use progressive enhancement:
+     - If `wt` (`worktrunk`) is detected: run `wt switch -c "$BRANCH"` (executes `wt.toml` lifecycle hooks for automated `.env` hydration).
+     - Otherwise: fallback to standard `git worktree add "../$BRANCH" -b "$BRANCH" origin/main`.
    - Run `/implement` strictly applying Matt Pocock's Deep Module design:
      - Simple interface surface, deep and robust internal capability.
      - **Dynamic-First, Coordinate-Fallback** for all UI/automation elements.
@@ -158,8 +162,9 @@ Select the council lens based on the nature of the decision:
      - If **Claude Code** built the code ➡️ **Codex** or **Antigravity** inspects in a fresh session.
      - If **Codex** built the code ➡️ **Claude Code** or **Antigravity** inspects.
    - Verification tests explicitly against every acceptance criterion in `intent.md`.
-5. **Completion Receipt:**
+5. **Completion Receipt & Worktree Teardown:**
    - Output diff summary, proof command results, and close resolved wayfinder tickets.
+   - **Worktree Garbage Collection**: Prune merged or abandoned ephemeral worktrees (`wt remove "$BRANCH"` or `git worktree remove "../$BRANCH"`) to eliminate disk amplification and avoid `.git/index.lock` collisions.
 
 ---
 

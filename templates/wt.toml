@@ -1,0 +1,20 @@
+# Reference worktrunk (wt) configuration for AI Agent Workspaces
+# Place this file as `wt.toml` in your repository root to automate environment hydration.
+#
+# See https://github.com/max-sixty/worktrunk for documentation.
+
+[worktree]
+# Automatically copy local environment files into newly spawned agent worktrees.
+# This prevents agents from wasting turns diagnosing missing env variables.
+copy_files = [
+    ".env",
+    ".env.local"
+]
+
+[hooks]
+# Post-switch hook: Executed immediately after creating/switching to the worktree.
+# Automatically hydrates dependencies so the agent can run tests right away.
+post_start = "if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; elif [ -f package-lock.json ]; then npm ci; elif [ -f Cargo.toml ]; then cargo check; fi"
+
+# Pre-removal hook: Invoked before `wt remove` destroys the worktree.
+pre_remove = "echo '[worktrunk] Cleaning up agent worktree...'"
