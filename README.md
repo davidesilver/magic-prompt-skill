@@ -21,6 +21,7 @@ Stop copy-pasting 20 lines of repetitive setup prompts every time you start a ne
 | **Tunnel vision & fragile architecture** | Dual-validation in **Phase 2**: business stress-testing via `/roast-room` and technical validation via `/llm-council`. |
 | **Slow agent ReAct loops & long builds** | Standardizes on **`rstackjs`** (Rsbuild, Rspress, Rslib, Rsdoctor) for instant compilation and sub-second feedback loops. |
 | **Missing skills & setup drift** | Built-in **Pre-flight Doctor** (`scripts/doctor.py --fix`) that auto-detects and installs missing skills across all your client folders. |
+| **Coding on unclear specs** | **Phase 3** adaptive spec checklist: PRD, TRD, app flow, design brief, backend schema, incremental plan. All six for a full app; only what the change touches for small edits. |
 | **Self-review bias in code generation** | Mandatory **Phase 4** independent cross-family inspection via `/claudex-loop` (e.g., Codex checks Claude's code against `intent.md`). |
 
 ---
