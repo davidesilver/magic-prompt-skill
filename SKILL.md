@@ -123,7 +123,11 @@ Select the council lens based on the nature of the decision:
 1. **Write `intent.md`**:
    - Save at the repository root.
    - Contains: user's verbatim requirements, non-negotiable constraints, out-of-scope boundaries, and measurable acceptance criteria.
-2. **Scaffold Context & Docs**:
+2. **Adaptive Spec Checklist (sizes the spec to the work):**
+   - For a full app build, cover all six aspects before the gate: product requirements (PRD: what the app does and for whom), technical requirements (TRD: which components it is assembled from), app flow (every screen, every click), design brief (the design system), backend schema, and an incremental implementation plan.
+   - For a small change, cover only the aspects the change actually touches. Never force six documents for a small edit.
+   - These aspects extend `intent.md` into a spec pack. This is a checklist, not a new phase and not a fixed document set.
+3. **Scaffold Context & Docs**:
    - Run `/claude-code-setup` or `setup-matt-pocock-skills`.
    - Update `CLAUDE.md` / `AGENTS.md` with issue-tracker location, triage labels, and domain glossaries (`GLOSSARY.md`, `docs/adr/`).
    - If an interactive documentation portal is required, use **`Rspress`** (`rstackjs`) for instant static generation and minimal build overhead.
