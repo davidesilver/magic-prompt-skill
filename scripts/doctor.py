@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Doctor & Dependency Installer for magic-prompt-skill.
-Checks all required skills and optimization engines across Claude Code, Codex, Antigravity, and OneDrive.
-Supports --fix to automatically install or symlink missing skills.
+Doctor for magic-prompt-skill.
+Read-only by default: checks that required skills exist (presence only, not loading or execution).
+--fix --only NAME links one missing skill from a local source; never touches skills you did not name.
 """
 
 import os
@@ -12,11 +12,10 @@ import subprocess
 import shutil
 
 REQUIRED_SKILLS = {
-    # Core process & superpowers
-    "brainstorming": "Superpowers native brainstorming module",
-    "writing-plans": "Superpowers native planning module",
-    "systematic-debugging": "Superpowers native debugging module",
-    "using-superpowers": "Superpowers rule enforcement",
+    # Core process (metodi Pocock, Superpowers rimosso)
+    "brainstorming": "Brainstorming e classificazione intento",
+    "diagnosing-bugs": "Diagnosi bug (circuit breaker dopo 3 fallimenti)",
+    "tdd": "Test-driven development",
     
     # Discovery & Grilling
     "find-skills": "Context and available skill discovery",
@@ -123,7 +122,8 @@ def auto_fix(missing_skills):
 
 def main():
     parser = argparse.ArgumentParser(description="Verify and install dependencies for magic-prompt-skill")
-    parser.add_argument("--fix", action="store_true", help="Automatically install/symlink missing skills from local sources")
+    parser.add_argument("--fix", action="store_true", help="Link missing skills from local sources (requires --only)")
+    parser.add_argument("--only", action="append", default=[], help="Skill name to fix (repeatable)")
     args = parser.parse_args()
 
     print("=====================================================")
@@ -132,6 +132,7 @@ def main():
 
     skill_status = check_skills()
     missing = [name for name, data in skill_status.items() if not data["found"]]
+    partial = [n for n, d in skill_status.items() if d["found"] and len(d["locations"]) < len(ECOSYSTEM_PATHS)]
 
     for skill_name, data in skill_status.items():
         status_icon = "✓" if data["found"] else "✗"
@@ -157,10 +158,17 @@ def main():
             print(f"[i] {tool:<28} Optional (Not installed) - {info['description']}")
             print(f"    └─ Recommendation: {info['install_hint']}")
 
+    if partial:
+        print(f"\n[i] Presenti solo in alcuni runtime: {', '.join(partial)}")
+
     if missing:
         print(f"\n⚠️  {len(missing)} required skills are missing from your environment.")
         if args.fix:
-            auto_fix(missing)
+            targets = [m for m in missing if m in args.only]
+            if not targets:
+                print("--fix richiede --only NAME tra le mancanti: " + ", ".join(missing))
+                sys.exit(1)
+            auto_fix(targets)
             print("\nRe-checking status...")
             post_check = check_skills()
             still_missing = [n for n, d in post_check.items() if not d["found"]]
@@ -171,8 +179,8 @@ def main():
                 print(f"Remaining missing skills: {', '.join(still_missing)}")
                 sys.exit(1)
         else:
-            print("Run with --fix to automatically locate and install them:")
-            print("  python3 scripts/doctor.py --fix\n")
+            print("Rimedio mirato (fonte locale, una skill alla volta):")
+            print("  python3 <skill>/scripts/doctor.py --fix --only <nome>\n")
             sys.exit(1)
     else:
         print("\n🎉 All required skills and tools are properly installed and ready!")

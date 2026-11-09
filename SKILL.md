@@ -1,173 +1,91 @@
 ---
 name: magic-prompt-skill
-description: "The complete autonomous project kickoff & engineering pipeline. Integrates token hygiene (agent-stack-optimizer / TokenEconomizer), discovery & OKR alignment (Chief of Staff), brainstorming (superpowers), decision mapping (wayfinder), deep grilling (grill-me), multi-perspective validation (llm-council for architecture, roast-room for product/business), project governance (intent.md, claude-code-setup), high-performance build tooling (rstackjs: Rsbuild, Rspress, Rslib, Rsdoctor), TDD deep-module implementation (implement, gstack), and independent cross-family review (claudex-loop). Governed by 3 hard approval gates. Self-heals by checking and installing missing skills via doctor.py. Triggers: /magic-prompt-skill, /superpowers, /kickoff."
+description: "Kickoff e pipeline di ingegneria per iniziative, feature e lavori complessi, con routing proporzionato al task. Instrada tra intervento diretto, scoperta/grilling, council tecnico (llm-council), Roast Room commerciale, governance (intent.md), implementazione TDD con deep modules e review cross-family (claudex-loop). Preflight read-only delle dipendenze (doctor.py), registro prove per ogni passaggio, gate di approvazione proporzionati. Integra selettivamente le skill rstack (new-feature, code-structure, evidence-driven-testing, before-and-after, greploop, unslop). Triggers: /magic-prompt-skill, /kickoff."
 ---
 
-# Magic Prompt Skill: The Autonomous Project Kickoff & Engineering Pipeline
+# Magic Prompt Skill: kickoff e pipeline di ingegneria
 
-The universal orchestration pipeline for new initiatives, features, and complex engineering across Claude Code, Codex, Antigravity, and OpenClaw/Jev.
+Guida di orchestrazione, non un sistema che forza l'esecuzione. Serve a non riscrivere ogni volta il prompt di avvio, ma ogni passaggio vale solo se eseguito e provato (vedi Registro).
 
-Instead of writing a complex 20-line kickoff prompt at every session launch, `/magic-prompt-skill` (aliased as `/superpowers` and `/kickoff`) runs a hardened 4-phase pipeline governed by **Layer 0 token hygiene**, **high-performance Rust build toolchains (`rstackjs`)**, **3 non-negotiable human approval gates**, and **cross-family independent verification**.
+Non e' un secondo framework: usa i metodi gia' presenti (Pocock: `grill-me`, `tdd`, `implement`, `diagnosing-bugs`; Claudex; Roast Room) e aggiunge solo routing, registro e gate.
 
----
+## Regole fisse
 
-## Pre-Flight Check: Self-Healing Skill Dependencies
+- Modello ed effort della sessione restano quelli in uso. Niente cambi a meta' lavoro.
+- Leggere questo file non equivale a eseguirlo. Ogni passaggio dichiarato completato richiede un artefatto o un comando/prova nel Registro.
+- Le soglie di contesto (50%/60%) richiedono telemetria reale. Se il runtime non la espone, dichiaralo e applica solo azioni che il coordinatore puo' eseguire (es. `handoff` a fine task o a contesto lungo).
+- Verifica hook e strumenti attivi nel runtime. Se assenti: "non disponibile", niente finzione.
+- Nessuna interfaccia grafica senza schizzo ASCII approvato.
+- Approvazioni gia' espresse dall'utente nel messaggio valgono: non richiederle.
 
-Before executing the pipeline, the skill automatically verifies that all dependencies exist across your environment:
+## Preflight (sola lettura)
 
 ```bash
-python3 scripts/doctor.py --fix
+python3 "<cartella-della-skill>/scripts/doctor.py"
 ```
 
-If any core skill (`brainstorming`, `wayfinder`, `grill-me`, `llm-council`, `roast-room`, `claudex-loop`, etc.) is missing, the doctor script automatically locates it in local caches/registries and symlinks or installs it into your active skills directory (`~/.agents/skills/`, `~/.claude/skills/`, `~/.codex/skills/`, or OneDrive).
+Percorso relativo alla skill, non al cwd del progetto. Controlla solo la presenza delle dipendenze, non caricamento ne' esecuzione. Se manca qualcosa: `doctor.py --fix --only <nome>` per un rimedio mirato dalla fonte canonica `~/Progetti/magic-prompt-skill`; mai distribuzione automatica su tutti i runtime.
 
----
+## Routing per task
 
-## Architecture Overview
+Scegli il percorso piu' corto che regge il rischio, dichiaralo in una riga.
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  Layer 0: Context Hygiene & Token Economizer (Passive Background Engine)    │
-│  • agent-stack-optimizer (MarkItDown Office/PDF to text + 50% Handoff Guard)│
-│  • TokenEconomizer (Dynamic tool pruning + 3-strike circuit breaker on loop)│
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  Phase 1: Discovery, OKRs & Brainstorming                                   │
-│  1. Chief of Staff OKR check ──▶ 2. /find-skills ──▶ 3. brainstorming       │
-│  4. /wayfinder (Map frontier & tickets) ──▶ 5. /grill-me (Relentless Q&A)   │
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       ▼
-                       [⛔ HARD-GATE 1: Plan & Map Approval]
-                                       │
-┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 2: Dual-Validation Council (Business vs Architecture)                │
-│  • Commercial / Product / Go-to-Market ──▶ /roast-room (Bezos, Hormozi, PG) │
-│  • Technical / Engineering Architecture ─▶ /llm-council (Haiku / Flash / V3)│
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       ▼
-                     [⛔ HARD-GATE 2: Council Verdict Approval]
-                                       │
-┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 3: Governance, Documentation & Project Contract                      │
-│  6. intent.md (Root, verbatim words) ──▶ 7. claude-code-setup / Pocock Docs │
-│  • Documentation Engine: Rspress (rstackjs) for docs sites & specs          │
-└──────────────────────────────────────┬──────────────────────────────────────┘
-                                       ▼
-                     [⛔ HARD-GATE 3: Pre-Implementation Approval]
-                                       │
-┌──────────────────────────────────────┴──────────────────────────────────────┐
-│  Phase 4: Implementation, Build Toolchain & Cross-Family Review             │
-│  8. Toolchain: Rsbuild / Rslib (sub-second builds, zero token lag)          │
-│  9. /implement (Pocock Deep Modules + strict TDD) ──▶ 10. /gstack (Rsdoctor)│
-│  11. /claudex-loop (Cross-Family Peer Inspection: Claude ⇆ Codex/Antigravity│
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+| Task | Percorso |
+|---|---|
+| Piccolo intervento, bug limitato, modifica documentale | Diretto. `diagnosing-bugs` se bug. Nessun council. |
+| Requisiti ambigui | `brainstorming` + `/wayfinder` + `/grill-me` (una domanda alla volta, con risposta consigliata). |
+| Decisione architetturale significativa | `/llm-council` sulla decisione. |
+| Decisione commerciale concreta (prezzo, offerta, posizionamento) | `/roast-room`, modalita' scelta per reversibilita' e costo; leggere roster e brain. |
+| Due decisioni distinte, una tecnica e una commerciale | Entrambi i council, uno per decisione. |
 
----
+Classifica a voce: Spike, Bounded o Architectural. Strategia: controlla se l'iniziativa serve le priorita' in `brain read profile/USER.md`.
 
-## Detailed Execution Protocol
+## Gate (proporzionati)
 
-### Layer 0: Context Hygiene & Token Economizer
-*Runs silently in the background across all phases.*
-1. **Document Ingestion (MarkItDown Hook):**
-   - Whenever specs, briefs, PDFs, or Office files (`.docx`, `.xlsx`, `.pptx`) are inspected, they are parsed as clean Markdown text via `agent-stack-optimizer`, eliminating massive vision/binary token waste.
-2. **Handoff Guard:**
-   - Warns at 50% context usage. If a phase approaches 60%, automatically writes an atomic `handoff` ticket so a clean session can resume without context rot.
-3. **Loop Circuit Breaker:**
-   - If `/implement` or test executions fail 3 times on the same error, execution halts and triggers `systematic-debugging` instead of spinning tokens.
+- **Gate 1**: Destinazione, scope e mappa decisioni, per lavori non banali. Niente council o codice prima del via.
+- **Gate 2**: sintesi del council (accordi, scontri, punti ciechi). Solo se un council e' stato convocato.
+- **Gate 3**: `intent.md` e batteria di test TDD proposta, prima di toccare codice di produzione.
 
----
+Task piccoli: un solo gate o nessuno, se l'utente ha gia' dato l'ok.
 
-### Phase 1: Discovery, OKR Alignment & Brainstorming
-*Model tier: Fast interactive reasoning (Sonnet, Gemini Flash, GPT-4o).*
+## Governance
 
-1. **Strategic Intent (Chief of Staff check):**
-   - Check user priorities (`profile/USER.md` or OKRs): *Does this initiative directly serve current strategic goals?*
-2. **Context & Skill Recon:**
-   - Run `/find-skills` and `/ponytail` to scan repository conventions, existing architecture, and applicable tools.
-3. **Intent Classification:**
-   - Invoke `superpowers:brainstorming` and declare classification out loud: **Spike**, **Bounded**, or **Architectural**.
-4. **Wayfinding:**
-   - Invoke `/wayfinder` to chart the map:
-     - Name the **Destination** in 1-2 lines.
-     - Divide open decisions into child decision tickets on the issue tracker.
-     - Sketch the **Frontier** and isolate **Fog of war**.
-5. **Interactive Grilling:**
-   - Invoke `/grill-me`: interview the human partner one question at a time down each branch of the design tree, providing recommended answers until the frontier is settled.
+`intent.md` in radice: requisiti verbatim, vincoli non negoziabili, fuori scope, criteri di accettazione misurabili.
 
-> [!CAUTION]
-> ### ⛔ HARD-GATE 1: Destination & Map Sign-Off
-> The agent MUST STOP and present the Destination, Scope, and Decision Map. Do NOT convene councils or write code until the user gives explicit affirmative approval.
+Checklist spec adattiva (estende `intent.md`, non e' una fase ne' un set fisso di documenti): per un'app completa copri PRD (cosa fa e per chi), TRD (da quali componenti e' fatta), flusso app (ogni schermata, ogni click), design brief, schema backend e piano incrementale. Per una modifica piccola solo gli aspetti che tocca. Aggiorna `CLAUDE.md`/`AGENTS.md` (issue tracker, glossario, ADR) con `/claude-code-setup` o i metodi Pocock disponibili, verificando i nomi reali delle skill nel runtime.
 
----
+## Implementazione
 
-### Phase 2: Dual-Validation Council (Business vs Architecture)
-*Model tier: Low-cost high-divergence models (Claude Haiku, Gemini Flash Lite, DeepSeek V3).*
+1. Isolamento branch quando serve: `wt switch -c "$BRANCH"` se `wt` e' presente, altrimenti `git worktree add "../$BRANCH" -b "$BRANCH" origin/main`. Template `templates/wt.toml` opzionale.
+2. `/implement` con deep modules (interfaccia semplice, interno robusto) e TDD proporzionato al rischio: Red, Green, Refactor. Dynamic-First, Coordinate-Fallback solo per UI/automazione.
+3. 3 fallimenti sullo stesso errore: stop e `diagnosing-bugs`, non altri giri.
+4. Toolchain: conserva quella esistente. Rsbuild/Rslib/Rspress/Rsdoctor solo per un bisogno tecnico dimostrato (progetto nuovo senza bundler, libreria da pubblicare, regressione di bundle misurata). Nessuna promessa di startup o HMR: si misura.
+5. `/gstack` per build e smoke test.
+6. Review indipendente `/claudex-loop` (Claude costruisce, Codex o Antigravity ispeziona in sessione nuova, e viceversa) contro ogni criterio di `intent.md`.
 
-Select the council lens based on the nature of the decision:
-- **Commercial / Product / Pricing / Positioning:**
-  - Convene **`/roast-room`**: a 7-seat founder board meeting (Bezos, Paul Graham, Hormozi, Gary V, Dan Martell, Gino Wickman, Buffett) debating commercial viability and leverage over 3 rounds.
-- **Technical Architecture / Scaling / Systems:**
-  - Convene **`/llm-council`**: Karpathy-style 5 independent advisors (Contrarian, First Principles, Expansionist, Outsider, Executor) evaluating edge-cases, failure modes, and structural soundness with peer review and Chairman synthesis.
+## Fonti rstack (selettive, solo se disponibili nel runtime)
 
-> [!CAUTION]
-> ### ⛔ HARD-GATE 2: Council Verdict Approval
-> The agent MUST STOP and present the Council's synthesis, highlighting agreements, clashes, and blind spots. Wait for user confirmation on the chosen path.
+`michaelshimeles/rstack` e' un workflow per agenti, distinto dalla toolchain Rust rstackjs. Usa solo cio' che serve:
 
----
+- `new-feature`: isolamento, quando adatto al repo.
+- `code-structure`: subordinata all'architettura esistente.
+- `evidence-driven-testing`: prove pertinenti al cambiamento.
+- `before-and-after`: se il cambiamento e' visivo.
+- `greploop`: solo con integrazione disponibile, autorizzazione PR e limiti espliciti.
+- `unslop`: per testi.
 
-### Phase 3: Project Governance, Documentation & Contracts
-*Model tier: Host coordinator model.*
+## Registro prove (obbligatorio)
 
-1. **Write `intent.md`**:
-   - Save at the repository root.
-   - Contains: user's verbatim requirements, non-negotiable constraints, out-of-scope boundaries, and measurable acceptance criteria.
-2. **Adaptive Spec Checklist (sizes the spec to the work):**
-   - For a full app build, cover all six aspects before the gate: product requirements (PRD: what the app does and for whom), technical requirements (TRD: which components it is assembled from), app flow (every screen, every click), design brief (the design system), backend schema, and an incremental implementation plan.
-   - For a small change, cover only the aspects the change actually touches. Never force six documents for a small edit.
-   - These aspects extend `intent.md` into a spec pack. This is a checklist, not a new phase and not a fixed document set.
-3. **Scaffold Context & Docs**:
-   - Run `/claude-code-setup` or `setup-matt-pocock-skills`.
-   - Update `CLAUDE.md` / `AGENTS.md` with issue-tracker location, triage labels, and domain glossaries (`GLOSSARY.md`, `docs/adr/`).
-   - If an interactive documentation portal is required, use **`Rspress`** (`rstackjs`) for instant static generation and minimal build overhead.
-   - **Workspace Isolation Scaffolding (Optional)**: If the repository leverages worktree isolation for concurrent AI agents, copy `templates/wt.toml` to repo root to automate `.env` hydration and post-checkout dependency installation via `worktrunk` (`wt`).
+Una riga per passaggio, in `kickoff-log.md` del progetto o nel messaggio finale:
 
-> [!CAUTION]
-> ### ⛔ HARD-GATE 3: Pre-Implementation Approval
-> The agent MUST present `intent.md` and the proposed TDD test battery. No production code is modified before the user confirms.
+`skill | percorso risolto | motivo | stato (eseguita / saltata + motivo / bloccata) | artefatto | comando o prova`
 
----
+Nessun passaggio "completato" senza prova. Per enforcement rigido serve un runner che valida lo stato, non Markdown.
 
-### Phase 4: Implementation, High-Speed Build & Cross-Family Review
-*Model tier: Premier Coding Engine (Claude 3.7 Sonnet / Opus, OpenAI Codex / o3) + Independent Inspector.*
+## Chiusura
 
-1. **High-Performance Build Standard (`rstackjs`):**
-   - **For new web projects (greenfield):** Default to **`Rsbuild`** for sub-second development server startup and lightning-fast HMR (<100ms), eliminating agent idle wait time.
-   - **For packages and libraries:** Standardize on **`Rslib`**.
-   - **For existing projects (brownfield):** Preserve existing bundlers (Vite/Next/Webpack); do not force migrations.
-2. **Workspace Isolation & TDD Deep Modules Implementation:**
-   - **Isolation Seam (`/new-feature`)**: Before editing, ensure branch isolation to prevent cross-agent workspace collisions. Use progressive enhancement:
-     - If `wt` (`worktrunk`) is detected: run `wt switch -c "$BRANCH"` (executes `wt.toml` lifecycle hooks for automated `.env` hydration).
-     - Otherwise: fallback to standard `git worktree add "../$BRANCH" -b "$BRANCH" origin/main`.
-   - Run `/implement` strictly applying Matt Pocock's Deep Module design:
-     - Simple interface surface, deep and robust internal capability.
-     - **Dynamic-First, Coordinate-Fallback** for all UI/automation elements.
-     - Strict **TDD**: write failing test (Red), implement minimum code (Green), refactor clean (Refactor).
-3. **Full-Stack QA & Bundle Audit:**
-   - Run `/gstack` to verify build targets, integration sanity, and smoke tests.
-   - Run **`Rsdoctor`** when bundle bloat, duplicate dependencies, or build speed regressions need diagnosis.
-4. **Cross-Family Independent Review (`/claudex-loop`):**
-   - The final inspection MUST be run through `/claudex-loop` using an independent peer provider:
-     - If **Claude Code** built the code ➡️ **Codex** or **Antigravity** inspects in a fresh session.
-     - If **Codex** built the code ➡️ **Claude Code** or **Antigravity** inspects.
-   - Verification tests explicitly against every acceptance criterion in `intent.md`.
-5. **Completion Receipt & Worktree Teardown:**
-   - Output diff summary, proof command results, and close resolved wayfinder tickets.
-   - **Worktree Garbage Collection**: Prune merged or abandoned ephemeral worktrees (`wt remove "$BRANCH"` or `git worktree remove "../$BRANCH"`) to eliminate disk amplification and avoid `.git/index.lock` collisions.
+Riepilogo diff, risultati dei comandi di prova, ticket wayfinder chiusi, pulizia worktree effimeri (`wt remove` o `git worktree remove`). Poi `/handoff` se il contesto e' lungo.
 
----
+## Trigger
 
-## Trigger Commands & Aliases
-- Primary Slash Command: `/magic-prompt-skill`
-- Aliases: `/superpowers`, `/kickoff`
+`/magic-prompt-skill`, `/kickoff`. L'alias `/superpowers` e' rimosso (Superpowers non e' piu' il metodo del setup).
