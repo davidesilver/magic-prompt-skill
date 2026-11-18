@@ -63,7 +63,23 @@ Checklist spec adattiva (estende `intent.md`, non e' una fase ne' un set fisso d
 3. 3 fallimenti sullo stesso errore: stop e `diagnosing-bugs`, non altri giri.
 4. Toolchain: conserva quella esistente. Rsbuild/Rslib/Rspress/Rsdoctor solo per un bisogno tecnico dimostrato (progetto nuovo senza bundler, libreria da pubblicare, regressione di bundle misurata). Nessuna promessa di startup o HMR: si misura.
 5. `/gstack` per build e smoke test.
-6. Review indipendente `/claudex-loop` (Claude costruisce, Codex o Antigravity ispeziona in sessione nuova, e viceversa) contro ogni criterio di `intent.md`.
+6. Review indipendente `/claudex-loop` contro ogni criterio di `intent.md`, con ruoli per costo (sezione sotto): costruisce il livello piu' economico che regge il rischio, ispeziona Claude in sessione nuova. Mai lo stesso agente come builder e ispettore.
+
+## Ruoli per costo (builder economico, revisore capace)
+
+Principio: il revisore e' il modello piu' capace, il builder il piu' economico che regge il rischio. Costo e capacita' si verificano nel runtime, non si assumono.
+
+| Livello | Lavoro | Builder | Ispettore (sessione nuova) |
+|---|---|---|---|
+| 0 | Decisioni meccaniche: classificare, instradare, scegliere tra opzioni con criteri espliciti | Modello locale se presente | Il coordinatore ricontrolla la scelta; nessuna approvazione delegata |
+| 1 | Semplice o ripetitivo: fixture, rename, doc, estrazione, helper isolato con test | Antigravity (`agy`, `builder=antigravity`) | Codex se il rischio e' basso, altrimenti Claude |
+| 2 | Implementazione ordinaria con criteri e prove chiari | Codex (`builder=codex`) | Claude (con `builder=codex` l'ispettore di claudex-loop e' gia' Claude) |
+| 3 | Architettura, sicurezza, soldi, migrazioni, lavoro ambiguo o irreversibile | Claude | Codex o Antigravity in sessione nuova, piu' prove del coordinatore |
+
+- Modelli locali: prima di assegnare il livello 0 elenca cio' che c'e' (`lms ls`, `ollama list`; `doctor.py` segnala solo se le CLI esistono). Se non ce n'e', il livello 0 passa al livello 1. Il modello locale non decide su rischio alto o azioni irreversibili e non approva review: propone, il coordinatore verifica.
+- Passa `builder=codex|antigravity` a `/claudex-loop`. Le revisioni del piano restano al peer provider della skill (cambiare chi pianifica richiede di aprire la conversazione nell'altro host).
+- Se un livello non e' disponibile (CLI assente, quota esaurita, modello locale non avviato): dichiaralo e sali di un livello, senza finzione e senza cambiare modello a meta' sessione.
+- Il Registro prove riporta per ogni passaggio builder e ispettore effettivi (modello richiesto e osservato).
 
 ## Fonti rstack (selettive, solo se disponibili nel runtime)
 

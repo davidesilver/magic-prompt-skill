@@ -73,7 +73,18 @@ def check_layer0():
 
 def check_optional_tools():
     wt_path = shutil.which("wt")
+    runners = {
+        "codex": ("Builder economico (livello 2)", "npm install -g @openai/codex"),
+        "agy": ("Builder per task semplici o ripetitivi (livello 1)", "Antigravity CLI"),
+        "lms": ("Modelli locali LM Studio (livello 0): elenca con `lms ls`", "LM Studio CLI"),
+        "ollama": ("Modelli locali Ollama (livello 0): elenca con `ollama list`", "https://ollama.com"),
+    }
+    extra = {}
+    for exe, (desc, hint) in runners.items():
+        path = shutil.which(exe)
+        extra[exe] = {"installed": path is not None, "path": path, "description": desc, "install_hint": hint}
     return {
+        **extra,
         "worktrunk (wt)": {
             "installed": wt_path is not None,
             "path": wt_path,

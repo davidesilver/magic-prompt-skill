@@ -22,7 +22,7 @@ Stop copy-pasting 20 lines of repetitive setup prompts every time you start a ne
 | **Slow agent ReAct loops & long builds** | Standardizes on **`rstackjs`** (Rsbuild, Rspress, Rslib, Rsdoctor) for instant compilation and sub-second feedback loops. |
 | **Missing skills & setup drift** | Built-in **Pre-flight Doctor** (`scripts/doctor.py`, read-only; `--fix --only NAME` for a targeted fix). |
 | **Coding on unclear specs** | **Phase 3** adaptive spec checklist: PRD, TRD, app flow, design brief, backend schema, incremental plan. All six for a full app; only what the change touches for small edits. |
-| **Self-review bias in code generation** | Mandatory **Phase 4** independent cross-family inspection via `/claudex-loop` (e.g., Codex checks Claude's code against `intent.md`). |
+| **Self-review bias in code generation** | Mandatory **Phase 4** independent cross-family inspection via `/claudex-loop` (e.g., Claude checks the code built by Codex or Antigravity against `intent.md`; builders are chosen by cost, see "Ruoli per costo" in SKILL.md). |
 
 ---
 
