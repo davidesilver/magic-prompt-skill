@@ -12,6 +12,8 @@ Non e' un secondo framework: usa i metodi gia' presenti (Pocock: `grill-me`, `td
 ## Regole fisse
 
 - Modello ed effort della sessione restano quelli in uso. Niente cambi a meta' lavoro.
+- Dimensionamento del modello a inizio sessione: classifica il lavoro per peso e rischio (meccanico / ordinario / difficile / critico, in linea con la tabella di routing) e dichiara in una riga il modello consigliato: il piu' potente dove rischio o complessita' lo richiedono, altrove il piu' leggero che regge quel rischio.
+- Se il runtime non lascia scegliere il modello all'agente, dillo e registra il consiglio per l'utente: niente finzione.
 - Leggere questo file non equivale a eseguirlo. Ogni passaggio dichiarato completato richiede un artefatto o un comando/prova nel Registro.
 - Le soglie di contesto (50%/60%) richiedono telemetria reale. Se il runtime non la espone, dichiaralo e applica solo azioni che il coordinatore puo' eseguire (es. `handoff` a fine task o a contesto lungo).
 - Verifica hook e strumenti attivi nel runtime. Se assenti: "non disponibile", niente finzione.
